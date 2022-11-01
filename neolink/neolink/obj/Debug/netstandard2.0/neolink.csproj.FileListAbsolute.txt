@@ -1,0 +1,14 @@
+/Users/mathowlett/Projects/neolink/neolink/neolink/bin/Debug/netstandard2.0/neolink.deps.json
+/Users/mathowlett/Projects/neolink/neolink/neolink/bin/Debug/netstandard2.0/neolink.dll
+/Users/mathowlett/Projects/neolink/neolink/neolink/bin/Debug/netstandard2.0/ref/neolink.dll
+/Users/mathowlett/Projects/neolink/neolink/neolink/bin/Debug/netstandard2.0/neolink.pdb
+/Users/mathowlett/Projects/neolink/neolink/neolink/obj/Debug/netstandard2.0/neolink.csproj.AssemblyReference.cache
+/Users/mathowlett/Projects/neolink/neolink/neolink/obj/Debug/netstandard2.0/App.xaml.g.cs
+/Users/mathowlett/Projects/neolink/neolink/neolink/obj/Debug/netstandard2.0/MainPage.xaml.g.cs
+/Users/mathowlett/Projects/neolink/neolink/neolink/obj/Debug/netstandard2.0/neolink.AssemblyInfoInputs.cache
+/Users/mathowlett/Projects/neolink/neolink/neolink/obj/Debug/netstandard2.0/neolink.AssemblyInfo.cs
+/Users/mathowlett/Projects/neolink/neolink/neolink/obj/Debug/netstandard2.0/neolink.csproj.CoreCompileInputs.cache
+/Users/mathowlett/Projects/neolink/neolink/neolink/obj/Debug/netstandard2.0/XamlC.stamp
+/Users/mathowlett/Projects/neolink/neolink/neolink/obj/Debug/netstandard2.0/neolink.dll
+/Users/mathowlett/Projects/neolink/neolink/neolink/obj/Debug/netstandard2.0/ref/neolink.dll
+/Users/mathowlett/Projects/neolink/neolink/neolink/obj/Debug/netstandard2.0/neolink.pdb

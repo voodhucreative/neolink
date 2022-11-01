@@ -1,0 +1,73 @@
+﻿<Properties StartupConfiguration="{F2244468-F929-48A1-9629-F276CB2C773D}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="neolink/neolink.Android/Resources/values/styles.xml">
+    <Files>
+      <File FileName="neolink/neolink/Helpers/Units.cs" Line="1" Column="1" />
+      <File FileName="neolink/neolink/MainPage.xaml.cs" Line="1005" Column="35" />
+      <File FileName="neolink/neolink.iOS/Info.plist" />
+      <File FileName="neolink/neolink/Helpers/NeoPhraseManager.cs" Line="162" Column="17" />
+      <File FileName="neolink/neolink/App.xaml.cs" Line="47" Column="1" />
+      <File FileName="neolink/neolink.iOS/Main.cs" Line="6" Column="13" />
+      <File FileName="neolink/neolink/Pages/DataInputPage.cs" Line="85" Column="30" />
+      <File FileName="neolink/neolink/Globals.cs" Line="13" Column="45" />
+      <File FileName="neolink/neolink/MainPage.xaml" Line="1" Column="1" />
+      <File FileName="neolink/neolink/Pages/Header.cs" Line="51" Column="13" />
+      <File FileName="neolink/neolink/Pages/Footer.cs" Line="227" Column="27" />
+      <File FileName="neolink/neolink/Services/DataReader.cs" Line="13" Column="30" />
+      <File FileName="neolink/neolink/Layouts/DictionaryPage.cs" Line="150" Column="40" />
+      <File FileName="neolink/neolink.iOS/AppDelegate.cs" Line="39" Column="10" />
+      <File FileName="neolink/neolink/neodata251022.json" Line="1" Column="1" />
+      <File FileName="neolink/neolink.Android/Resources/values/colors.xml" Line="5" Column="50" />
+      <File FileName="neolink/neolink.Android/Resources/values/styles.xml" Line="29" Column="5" />
+      <File FileName="neolink/neolink.Android/Properties/AndroidManifest.xml" Line="1" Column="1" />
+      <File FileName="neolink/neolink/App.xaml" Line="1" Column="1" />
+      <File FileName="neolink/neolink/Layouts/DictionaryPage (copy).cs" Line="53" Column="12" />
+      <File FileName="neolink/neolink/Layouts/DevicesPage (copy).cs" Line="73" Column="1" />
+      <File FileName="neolink/neolink.Android/MainActivity.cs" Line="15" Column="1" />
+      <File FileName="neolink/neolink/Services/FileManager.cs" Line="127" Column="36" />
+      <File FileName="neolink/neolink.Android/Properties/AssemblyInfo.cs" Line="31" Column="75" />
+      <File FileName="neolink/neolink.Android/Resources/drawable/ic_launcher_background.xml" Line="1" Column="1" />
+      <File FileName="neolink/neolink.Android/Resources/mipmap-anydpi-v26/icon.xml" Line="1" Column="1" />
+      <File FileName="neolink/neolink.Android/Resources/mipmap-anydpi-v26/ic_launcher.xml" Line="1" Column="1" />
+      <File FileName="neolink/neolink.Android/Resources/drawable/splash_background.xml" Line="10" Column="28" />
+      <File FileName="neolink/neolink/Vocabulary/Phrases/CustomPhrases.cs" Line="307" Column="25" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="neolink" expanded="True">
+            <Node name="neolink" expanded="True">
+              <Node name="Helpers" expanded="True" />
+              <Node name="Services" expanded="True" />
+              <Node name="Vocabulary" expanded="True">
+                <Node name="Phrases" expanded="True" />
+                <Node name="Words" expanded="True" />
+              </Node>
+            </Node>
+            <Node name="neolink.Android" expanded="True">
+              <Node name="Properties" expanded="True" />
+              <Node name="Resources" expanded="True">
+                <Node name="drawable" expanded="True" />
+                <Node name="values" expanded="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State />
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/Users/mathowlett/Projects/neolink/neolink/neolink/MainPage.xaml.cs" relfile="neolink/neolink/MainPage.xaml.cs" line="533" column="1" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.MonoDroid LastDeploySdkVersion="13.0.0.0" />
+  <MonoDevelop.Ide.ItemProperties.neolink.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.98F0E6BF-879E-48C4-A92F-32C246B28731" />
+  <Xamarin.Addins.Core.Project ActiveDebugTarget="Android.ZY32BKN92N" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.neolink.Android AndroidDesignerPreferredTheme="MainTheme" PreferredExecutionTarget="Android.ZY32BKN92N" />
+</Properties>

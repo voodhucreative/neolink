@@ -1,0 +1,59 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2515" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.7.3" />
+    <PackageReference Include="Xam.Plugin.DeviceInfo" Version="4.1.1" />
+    <PackageReference Include="Xam.Plugin.SimpleAudioPlayer" Version="1.6.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Plugin.BLE" Version="2.1.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Xam.Plugin.DeviceInfo" />
+    <None Remove="Xam.Plugin.SimpleAudioPlayer" />
+    <None Remove="Vocabulary\" />
+    <None Remove="Vocabulary\Words\" />
+    <None Remove="Vocabulary\Phrases\" />
+    <None Remove="neodata251022.json" />
+    <None Remove="Newtonsoft.Json" />
+    <None Remove="Plugin.BLE" />
+    <None Remove="neodata251022 %28copy%29.json" />
+    <None Remove="neodata251022 %28another copy%29.json" />
+    <None Remove="neodata251022 %283rd copy%29.json" />
+    <None Remove="neodata251022 %284th copy%29.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Vocabulary\" />
+    <Folder Include="Vocabulary\Words\" />
+    <Folder Include="Vocabulary\Phrases\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Remove="DataInput.xaml" />
+    <EmbeddedResource Remove="Data.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="neodata0001.json" />
+    <EmbeddedResource Include="dcomms171022.json" />
+    <EmbeddedResource Include="neodata0002.json" />
+    <EmbeddedResource Include="session281022.json" />
+    <EmbeddedResource Include="session011122.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="DataInput.xaml">
+      <DependentUpon>MyPage.xaml</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Data.xaml">
+      <DependentUpon>DataInputPage.xaml</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>
