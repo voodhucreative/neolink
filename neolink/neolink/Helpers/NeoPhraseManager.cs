@@ -29,6 +29,23 @@ namespace neolink.Helpers
 
         public static string[] VocabularyData = null;
 
+        static int UseableBanks = 1; // single words
+        static int MaxFrequency = 100;
+        static int SingleWordFrequency = MaxFrequency;
+        static int PhraseFrequency = 0;
+        static int SentenceFrequency = 0;
+
+        static int Complexity = 0;
+        static int MaxComplexity = 7;
+
+        const int WORDSONLY = 1;
+        const int WORDSPHRASES = 2;
+        const int WORDSSENTENCES = 3;
+        const int WORDSPHRASESSENTENCES = 4;
+        const int PHRASESONLY = 5;
+        const int PHRASESSENTENCES = 6;
+        const int SENTENCESONLY = 7;
+
         List<int> ReceivedData;
 
         static PhraseManager DefaultPhraseManager;
@@ -38,20 +55,11 @@ namespace neolink.Helpers
             DefaultPhraseManager = new PhraseManager();
             DefaultPhraseManager.Init();
 
+            SetVocabularyComplexity(1);
+
+            //SetVocabularyOptions(true, false, false);
+
             BuildAllData();
-
-            /*VocabularyData = BuildVocabulary();
-
-            SessionPhrases = PopulateSessionPhrases();
-
-            PhraseIndexes = PopulatePhraseIndexes();
-
-            //PhraseIndexes = ReceivedData.Distinct().ToList();
-
-            AvailablePhrases = PopulateAvailablePhrases();
-
-            PhrasePairs = PopulatePhrasePairs();*/
-
 
             // from an embedded json file
             ReceivedData = DataReader.ParseJsonInput("neodata0001.json");
@@ -60,7 +68,6 @@ namespace neolink.Helpers
             // from a user created file
             FileManager.SaveFile("blaa.json", "bla, 23, 34, 324, 2354,er , 635,645,7 ,5 ,34,4,3f24,t6,y3,5h7,g,574,gh,7yh,h537,7h,,745, poo");
             string crap = FileManager.LoadLocalFile("blaa.json");
-
 
             FileManager.SaveEmbeddedFile("cack.json", "bla, 23, 34, 324, 2354,er , 635,645,7 ,5 ,34,4,3f24,t6,y3,5h7,g,574,gh,7yh,h537,7h,,745, poo");
 
@@ -96,6 +103,7 @@ namespace neolink.Helpers
 
         public static void BuildAllData()
         {
+            SetVocabularyOptions(Globals.UseSingleWords, Globals.UsePhrases, Globals.UseSentences);
 
             VocabularyData = BuildVocabulary();
 
@@ -123,7 +131,7 @@ namespace neolink.Helpers
             while (count < vocabData.Length-1)
             {
                 string newPhrase = GetRandomPhrase();
-               //int wordCount = newPhrase.Split(' ').Length;
+                //int wordCount = newPhrase.Split(' ').Length;
 
                 /*
                 while (wordCount > MaxWordsPerPhrase)
@@ -131,45 +139,171 @@ namespace neolink.Helpers
                     newPhrase = GetRandomPhrase();
                 }*/
 
-                while (vocabData.Contains(newPhrase))
+
+                if (Complexity < 5)
                 {
-                    newPhrase = GetRandomPhrase();
+                    while (newPhrase.Length > 40)
+                    {
+                        newPhrase = GetRandomPhrase();
+                    }
+
+                    if (newPhrase.Length <= 40)
+                    {
+                        vocabData[count] = newPhrase;
+                        count++;
+                    }
+                }
+                else
+                {
+                    while (vocabData.Contains(newPhrase))
+                    {
+                        newPhrase = GetRandomPhrase();
+                    }
                 }
 
-                while (newPhrase.Length > 40)
-                {
-                    newPhrase = GetRandomPhrase();
-                }
 
-                if (newPhrase.Length <= 40)
-                {
-                    vocabData[count] = newPhrase;
-                    count++;
-                }
-                //vocabData[count] = newPhrase;
+                vocabData[count] = newPhrase;
 
-                //count++;
+                count++;
+
+                Console.WriteLine("Count: " + count);
             }
-            return vocabData;
+            return vocabData.Distinct().ToArray();
         }
 
+        public static void SetVocabularyComplexity(int complexity)
+        {
+            Complexity = complexity;
 
+            if (Complexity > MaxComplexity)
+            {
+                Complexity = MaxComplexity;
+            }
 
+            switch (Complexity)
+            {
+                case WORDSONLY:
+                    SetVocabularyOptions(true, false, false);
+                    break;
+                case WORDSPHRASES:
+                    SetVocabularyOptions(true, true, false);
+                    break;
+                case WORDSSENTENCES:
+                    SetVocabularyOptions(true, false, true);
+                    break;
+                case WORDSPHRASESSENTENCES:
+                    SetVocabularyOptions(true, true, true);
+                    break;
+                case PHRASESONLY:
+                    SetVocabularyOptions(false, true, false);
+                    break;
+                case PHRASESSENTENCES:
+                    SetVocabularyOptions(false, true, true);
+                    break;
+                case SENTENCESONLY:
+                    SetVocabularyOptions(false, false, true);
+                    break;
+            }
+        }
 
+        public static void SetVocabularyOptions(bool useWords, bool usePhrases, bool useSentences)
+        {
+            Globals.UseSingleWords = useWords;
+            Globals.UsePhrases = usePhrases;
+            Globals.UseSentences = useSentences;
+            UpdateVocabularyFrequencies();
+        }
 
+        public static void UpdateVocabularyFrequencies()
+        {
+            SingleWordFrequency = 0;
+            PhraseFrequency = 0;
+            SentenceFrequency = 0;
 
+            if (Globals.UseSingleWords) // use single words
+            {
+                SingleWordFrequency = 100;
+
+                if (Globals.UsePhrases) // and phrases
+                {
+                    SingleWordFrequency = 50;
+                    PhraseFrequency = 50;
+
+                    if (Globals.UseSentences) // and sentences
+                    {
+                        SingleWordFrequency = 34;
+                        PhraseFrequency = 33;
+                        SentenceFrequency = 33;
+                    }
+                }
+                else // don't use phrases
+                {
+                    if (Globals.UseSentences)
+                    {
+                        SingleWordFrequency = 50;
+                        SentenceFrequency = 50;
+                    }
+                }
+            }
+            else // don't use single words
+            {
+                SingleWordFrequency = 0;
+
+                if (Globals.UsePhrases) // use phrases
+                {
+                    PhraseFrequency = 100;
+
+                    if (Globals.UseSentences) // and sentences
+                    {
+                        PhraseFrequency = 50;
+                        SentenceFrequency = 50;
+                    }
+                }
+                else // don't use phrases
+                {
+                    PhraseFrequency = 0;
+
+                    if (Globals.UseSentences)
+                    {
+                        SentenceFrequency = 100;
+                    }
+                }
+            }
+        }
 
         public static string GetRandomPhrase()
         {
-            int bank = Numbers.GetNextRandom(0, 100);
-            int sub_bank = Numbers.GetNextRandom(0, 100);
-            int phrase_seed = Numbers.GetNextRandom(0, 100);
+            int bank = Numbers.GetNextRandom(0, MaxFrequency);
+            int sub_bank = Numbers.GetNextRandom(0, MaxFrequency);
+            int phrase_seed = Numbers.GetNextRandom(0, MaxFrequency);
 
-            if (bank > 10) // simple pool
+            if (bank >= 0 && bank < SingleWordFrequency)
             {
+                // single word
+                if (phrase_seed >= 0 && phrase_seed < 20)
+                {
+                    return DefaultPhraseManager.GetNoun().ToUpper();
+                }
+                else if (phrase_seed >= 20 && phrase_seed < 40)
+                {
+                    return DefaultPhraseManager.GetVerb().ToUpper();
+                }
+                else if (phrase_seed >= 40 && phrase_seed < 60)
+                {
+                    return DefaultPhraseManager.GetAdverb().ToUpper();
+                }
+                else if (phrase_seed >= 60 && phrase_seed < 80)
+                {
+                    return DefaultPhraseManager.GetAdjective().ToUpper();
+                }
+                return DefaultPhraseManager.GetItem().ToUpper();
+            }
+            else if (bank >= SingleWordFrequency && bank < PhraseFrequency)
+            {
+                // phrases
                 if (sub_bank >= 0 && sub_bank < 20)
                 {
-                    return CustomPhrases.Data[Numbers.GetNextRandom(0, CustomPhrases.Data.Length - 1)];
+                    return CustomPhrases.Data[Numbers.GetNextRandom(0, CustomPhrases.Data.Length - 1)].ToUpper();
                 }
                 else if (sub_bank >= 20 && sub_bank < 40)
                 {
@@ -188,33 +322,31 @@ namespace neolink.Helpers
                     return DefaultPhraseManager.GetDescriptiveItem().ToUpper();
                 }
             }
-            else // complex pool
+            else // use sentences
             {
-                phrase_seed = Numbers.GetNextRandom(0, 100);
-
                 if (phrase_seed >= 0 && phrase_seed < 10)
                 {
-                    return CustomPhrases.Data[Numbers.GetNextRandom(0, CustomPhrases.Data.Length - 1)];
+                    return CustomPhrases.Data[Numbers.GetNextRandom(0, CustomPhrases.Data.Length - 1)].ToUpper();
                 }
                 else if (phrase_seed >= 10 && phrase_seed < 20)
                 {
-                    return ConversationalPhrases.Data[Numbers.GetNextRandom(0, ConversationalPhrases.Data.Length - 1)];
+                    return ConversationalPhrases.Data[Numbers.GetNextRandom(0, ConversationalPhrases.Data.Length - 1)].ToUpper();
                 }
                 else if (phrase_seed >= 20 && phrase_seed < 30)
                 {
-                    return FelicitousPhrases.Data[Numbers.GetNextRandom(0, FelicitousPhrases.Data.Length - 1)];
+                    return FelicitousPhrases.Data[Numbers.GetNextRandom(0, FelicitousPhrases.Data.Length - 1)].ToUpper();
                 }
                 else if (phrase_seed >= 30 && phrase_seed < 40)
                 {
-                    return PrepositionBy.Data[Numbers.GetNextRandom(0, PrepositionBy.Data.Length - 1)];
+                    return PrepositionBy.Data[Numbers.GetNextRandom(0, PrepositionBy.Data.Length - 1)].ToUpper();
                 }
                 else if (phrase_seed >= 40 && phrase_seed < 50)
                 {
-                    return PrepositionWith.Data[Numbers.GetNextRandom(0, PrepositionWith.Data.Length - 1)];
+                    return PrepositionWith.Data[Numbers.GetNextRandom(0, PrepositionWith.Data.Length - 1)].ToUpper();
                 }
                 else if (phrase_seed >= 50 && phrase_seed < 60)
                 {
-                    return SimplePhrases.Data[Numbers.GetNextRandom(0, SimplePhrases.Data.Length - 1)];
+                    return SimplePhrases.Data[Numbers.GetNextRandom(0, SimplePhrases.Data.Length - 1)].ToUpper();
                 }
                 else if (phrase_seed >= 60 && phrase_seed < 70)
                 {

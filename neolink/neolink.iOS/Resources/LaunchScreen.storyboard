@@ -19,8 +19,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" image="neolink.png" translatesAutoresizingMaskIntoConstraints="NO" id="23">
-                                <rect key="frame" x="16" y="379" width="358" height="86"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" image="neolinkwide.png" translatesAutoresizingMaskIntoConstraints="NO" id="23">
+                                <rect key="frame" x="16" y="418.33333333333331" width="358" height="7.3333333333333144"/>
                                 <rect key="contentStretch" x="0.0" y="0.0" width="0.0" height="0.0"/>
                             </imageView>
                         </subviews>
@@ -40,6 +40,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="neolink.png" width="228.24000549316406" height="85.919998168945312"/>
+        <image name="neolinkwide.png" width="40.310550689697266" height="7.1252050399780273"/>
     </resources>
 </document>

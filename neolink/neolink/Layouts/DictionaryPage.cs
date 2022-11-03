@@ -4,6 +4,10 @@ using neolink.Helpers;
 using neolink.Layouts;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
+using Entry = Xamarin.Forms.Entry;
+using Picker = Xamarin.Forms.Picker;
+using ScrollView = Xamarin.Forms.ScrollView;
 
 namespace neolink.Pages
 {
@@ -22,8 +26,54 @@ namespace neolink.Pages
 
         Label PhrasesLabel;
 
+        int smallIconSize;
+
+        int dataInputFontSize;
+
+        int dataInputHeight;
+
+        int labelFontSize;
+
+        int keyWidth;
+        int phraseWidth;
+
+
+        CheckBox UseWords;
+        CheckBox UsePhrases;
+        CheckBox UseSentences;
+
+        int Selected = 1;
+
+
+        Dictionary<string, int> ComplexityLevels;
+
+        Picker ComplexityPicker;
+
         public DictionaryPage(List<string> phrases)
         {
+            smallIconSize = Units.ScreenWidth10Percent;
+            if (smallIconSize > 48) { smallIconSize = 48; };
+
+            dataInputFontSize = Units.DynamicFontSizeXL;
+            if (dataInputFontSize > 16) { dataInputFontSize = 16; }
+
+            labelFontSize = Units.DynamicFontSizeXL;
+            if (labelFontSize > 16) { labelFontSize = 16; }
+
+            keyWidth = Units.ScreenWidth15Percent;
+
+            dataInputHeight = dataInputFontSize * 2;
+
+            if (DeviceInfo.Platform == DevicePlatform.Android)
+            {
+                dataInputHeight = dataInputFontSize * 3;
+            }
+
+            phraseWidth = Units.ScreenWidth - (keyWidth + (Units.ScreenUnitL + Units.ScreenUnitL));
+
+
+
+
             Content = new Grid
             {
                 BackgroundColor = Color.FromHex("#000000"),
@@ -37,13 +87,121 @@ namespace neolink.Pages
             RandomiseData = new Image
             {
                 Source = "random.png",
-                WidthRequest = Units.ScreenUnitM * 2,
-                HeightRequest = Units.ScreenUnitM * 2,
+                WidthRequest = smallIconSize,
+                HeightRequest = smallIconSize,
                 Aspect = Aspect.AspectFit,
                 HorizontalOptions = LayoutOptions.EndAndExpand,
                 VerticalOptions = LayoutOptions.EndAndExpand,
                 Margin = 8
             };
+
+
+            ComplexityLevels = new Dictionary<string, int>
+            {
+                { "Lowest", 1 },
+                { "Low", 2 },
+                { "Average", 3 },
+                { "Above Average", 4 },
+                { "Smart", 5 },
+                { "Very Smart", 6},
+                { "Genius", 7 },
+            };
+
+            ComplexityPicker = new Picker
+            {
+                Title = "",
+                FontSize = 12,
+                HeightRequest = 24,
+                TextColor = Color.Black,
+                VerticalOptions = LayoutOptions.CenterAndExpand,
+                SelectedIndex = 0,
+                WidthRequest = Units.HalfScreenWidth
+            };
+
+            foreach (string colorName in ComplexityLevels.Keys)
+            {
+                ComplexityPicker.Items.Add(colorName);
+            }
+
+            ComplexityPicker.SelectedIndex = 0;
+            
+
+            UseWords = new CheckBox
+            {
+                HorizontalOptions = LayoutOptions.CenterAndExpand,
+                IsChecked = Globals.UseSingleWords,
+                IsEnabled = false,
+                Opacity = 0.5
+            };
+
+            UsePhrases = new CheckBox
+            {
+                HorizontalOptions = LayoutOptions.CenterAndExpand,
+                IsChecked = Globals.UsePhrases
+            };
+
+            UseSentences = new CheckBox
+            {
+                HorizontalOptions = LayoutOptions.CenterAndExpand,
+                IsChecked = Globals.UseSentences
+            };
+
+            UseWords.CheckedChanged += (sender, e) =>
+            {
+                //UpdateCheckBoxes();
+                
+            };
+
+            UsePhrases.CheckedChanged += (sender, e) =>
+            {
+                UpdateCheckBoxes();
+            };
+
+            UseSentences.CheckedChanged += (sender, e) =>
+            {
+                UpdateCheckBoxes();
+            };
+
+            StackLayout VocabularyOptions = new StackLayout
+            {
+
+                Orientation = StackOrientation.Horizontal,
+                Children =
+                {
+                    /*
+                    new StackLayout
+                    {
+                        Orientation = StackOrientation.Vertical,
+                        HorizontalOptions = LayoutOptions.CenterAndExpand,
+                        Padding = 4,
+                        Children = {
+                            UseWords,
+                            new Label { TextColor = Color.White, FontSize = 10, Text = "Words", HorizontalOptions = LayoutOptions.Center, HorizontalTextAlignment = TextAlignment.Center}
+                        }
+                    },*/
+                    new StackLayout
+                    {
+                        Orientation = StackOrientation.Vertical,
+                        HorizontalOptions = LayoutOptions.CenterAndExpand,
+                        Padding = 4,
+                        Children = {
+                            UsePhrases,
+                            new Label { TextColor = Color.White, FontSize = 10, Text = " + Phrases", HorizontalOptions = LayoutOptions.Center, HorizontalTextAlignment = TextAlignment.Center}
+                        }
+                    },
+                    new StackLayout
+                    {
+                        Orientation = StackOrientation.Vertical,
+                        HorizontalOptions = LayoutOptions.CenterAndExpand,
+                        Padding = 4,
+                        Children = {
+                            UseSentences,
+                            new Label { TextColor = Color.White, FontSize = 10, Text = " + Sentences", HorizontalOptions = LayoutOptions.Center, HorizontalTextAlignment = TextAlignment.Center} 
+                        }
+                    }
+                }
+            };
+
 
             PhraseList = new List<Entry>();
 
@@ -56,8 +214,11 @@ namespace neolink.Pages
             DataInputScroller = new ScrollView
             {
                 Content = PhraseListContainer,
-                Margin = new Thickness(8, 8, 8, 8)
+                //Margin = new Thickness(8, 8, 8, 8)
             };
+
+            Globals.UseSingleWords = true;
+            UpdateCheckBoxes();
 
             CreateNumberedDictionary();
  
@@ -66,34 +227,38 @@ namespace neolink.Pages
                  {
                      Command = new Command(() =>
                      {
-                         GenerateNewPhrases();
+                         if (Selected >= 1)
+                         {
+                             GenerateNewPhrases();
+                         }
                      })
                  }
              );
 
             KeysLabel = new Label
             {
-                FontSize = 12,
+                FontSize = labelFontSize,
                 FontAttributes = FontAttributes.Bold,
                 Text = "Keys",
                 TextColor = Color.Cyan,
-                WidthRequest = 64,
-                Margin = new Thickness(8, 16, 0, 0)
+                WidthRequest = keyWidth,
+                Margin = new Thickness(0, 16)
+                //Margin = new Thickness(0, 0, 0, 0)
             };
 
             PhrasesLabel = new Label
             {
-                FontSize = 12,
+                FontSize = labelFontSize,
                 FontAttributes = FontAttributes.Bold,
                 Text = "Session Phrases",
                 TextColor = Color.Cyan,
-                WidthRequest = Units.ScreenWidth - 150,
-                Margin = new Thickness(0, 16, 0, 0)
+                WidthRequest = phraseWidth,
+                Margin = new Thickness(0, 16)
+                //Margin = new Thickness(24, 0, 0, 0)
             };
 
             StackLayout ContentContainer = new StackLayout
             {
-
                 Orientation = StackOrientation.Vertical,
 
                 Children =
@@ -103,7 +268,15 @@ namespace neolink.Pages
                         Orientation = StackOrientation.Horizontal,
                         Children =
                         {
-                            new Grid{ },
+                            new Label
+                            {
+                                TextColor = Color.White,
+                                Text = "Complexity",
+                                FontSize = 12,
+                                VerticalOptions = LayoutOptions.CenterAndExpand,
+                                VerticalTextAlignment = TextAlignment.Center
+                            },
+                            ComplexityPicker,
                             RandomiseData
                         }
                     },
@@ -118,7 +291,7 @@ namespace neolink.Pages
                     },
                     DataInputScroller
                 },
-                Margin = new Thickness(0, 32, 0, 16)
+                //Margin = new Thickness(0, 16, 0, 8)
 
             };
 
@@ -143,13 +316,14 @@ namespace neolink.Pages
 
                 PhraseList.Add(new Entry
                 {
-                    BackgroundColor = bgColor,
+                    BackgroundColor = Color.FromHex("#eeeeee"),
                     TextColor = Color.FromHex("#111111"),
-                    FontSize = 16,
-                    WidthRequest = Units.ScreenWidth - 150,
-                    HeightRequest = 40,
-                    Margin = 2,
+                    FontSize = dataInputFontSize,
+                    WidthRequest = phraseWidth,
+                    HeightRequest = dataInputHeight,
+                    VerticalOptions = LayoutOptions.Center,
                     VerticalTextAlignment = TextAlignment.Center,
+                    FlowDirection = FlowDirection.LeftToRight,
                     Text = phrase
                 });
             }
@@ -185,8 +359,6 @@ namespace neolink.Pages
             int count = 0;
             foreach(KeyValuePair<int, string> pair in NeoPhraseManager.GetPhrasePairs())
             {
-
-
                 PhraseListContainer.Children.Add(new StackLayout
                 {
                     Orientation = StackOrientation.Horizontal,
@@ -195,9 +367,9 @@ namespace neolink.Pages
                         new Label
                         {
                             TextColor = Color.White,
-                            FontSize = 12,
+                            FontSize = labelFontSize,
                             Text = pair.Key.ToString("D4")+":",
-                            WidthRequest = 64,
+                            WidthRequest = keyWidth,
                             VerticalOptions = LayoutOptions.CenterAndExpand,
                             VerticalTextAlignment = TextAlignment.Center
                         },
@@ -214,9 +386,53 @@ namespace neolink.Pages
 
         public void GenerateNewPhrases()
         {
+            int complexity = ComplexityPicker.SelectedIndex+1;
+
+
             DataInputScroller.Opacity = 0.2;
+            NeoPhraseManager.SetVocabularyComplexity(complexity);
             NeoPhraseManager.BuildAllData();
             CreateNumberedDictionary();
+        }
+
+        public void UpdateCheckBoxes()
+        {
+
+            Selected = 0;
+
+            Globals.UseSingleWords = UseWords.IsChecked;
+            Globals.UsePhrases = UsePhrases.IsChecked;
+            Globals.UseSentences = UseSentences.IsChecked;
+
+            //UseWords.IsChecked = Globals.UseSingleWords;
+            //UsePhrases.IsChecked = Globals.UsePhrases;
+            //UseSentences.IsChecked = Globals.UseSentences;
+
+            if (Globals.UseSingleWords)
+            {
+                Selected++;
+            }
+
+            if (Globals.UsePhrases)
+            {
+                Selected++;
+            }
+
+            if (Globals.UseSentences)
+            {
+                Selected++;
+            }
+
+            RandomiseData.IsEnabled = true;
+            RandomiseData.Opacity = 1.0;
+
+            if (Selected == 0)
+            {
+                RandomiseData.IsEnabled = false;
+                RandomiseData.Opacity = 0.5;
+            }
+
+
         }
     }
 }

@@ -31,8 +31,46 @@ namespace neolink.Pages
 
         Label UpdateDataStream;
 
+        int smallIconSize;
+
+        int dataInputFontSize;
+
+        int dataInputHeight;
+
+        int labelFontSize;
+
+        int buttonLabelSize;
+
+        int dataListFontSize;
+
+        bool isLocalFile;
+
         public DownloadsPage()
         {
+
+            isLocalFile = false;
+            smallIconSize = Units.ScreenWidth10Percent;
+            if (smallIconSize > 48) { smallIconSize = 48; };
+
+            dataInputFontSize = Units.DynamicFontSizeXL;
+            if (dataInputFontSize > 16) { dataInputFontSize = 16; }
+
+            labelFontSize = Units.DynamicFontSizeXL;
+            if (labelFontSize > 16) { labelFontSize = 16; }
+
+            buttonLabelSize = Units.DynamicFontSizeXXXL;
+            if (buttonLabelSize > 13) { buttonLabelSize = 13; }
+
+            dataListFontSize = buttonLabelSize*2;
+
+            dataInputHeight = dataInputFontSize * 2;
+
+            if (DeviceInfo.Platform == DevicePlatform.Android)
+            {
+                dataInputHeight = dataInputFontSize * 3;
+            }
+
+
             NeoLinkDefaultFiles = FileManager.GetLocalNeoLinkFiles();
 
             Content = new Grid
@@ -46,15 +84,17 @@ namespace neolink.Pages
 
             DownloadListLabel = new Label
             {
-                FontSize = Units.DynamicFontSizeXXL,
+                BackgroundColor = Color.Cyan,
+                FontSize = buttonLabelSize,
                 FontAttributes = FontAttributes.Bold,
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
                 HorizontalTextAlignment = TextAlignment.Center,
                 VerticalOptions = LayoutOptions.CenterAndExpand,
                 VerticalTextAlignment = TextAlignment.Center,
-                Text = "LOAD DATA",
-                TextColor = Color.White,
-                WidthRequest = Units.ScreenWidth,
+                Text = "IMPORT DATA FROM FILE",
+                TextColor = Color.Black,
+                WidthRequest = buttonLabelSize * 16,
+                HeightRequest = buttonLabelSize * 4,
                 Margin = new Thickness(8, 16, 0, 0)
             };
 
@@ -67,25 +107,29 @@ namespace neolink.Pages
                          {
                              try
                              {
-                                 DownloadListLabel.TextColor = Color.DarkCyan;
-                                 DownloadListLabel.Text = "Scanning for data files...";
+                                 //DownloadListLabel.TextColor = Color.DarkCyan;
+                                 //DownloadListLabel.Text = "Scanning for data files...";
 
                                  FileResult res = await FileManager.Pick(Xamarin.Essentials.PickOptions.Default);
 
                                  LoadedFile = FileManager.LoadLocalFile(res.FullPath);
 
+                                 SelectedFile.Text = res.FullPath;
+
+                                 isLocalFile = true;
+
                                  if (LoadedFile != null)
                                  {
-                                     DownloadListLabel.TextColor = Color.White;
-                                     DownloadListLabel.Text = " DATA LOADED : " + res.FullPath;
+                                     //DownloadListLabel.TextColor = Color.White;
+                                    // DownloadListLabel.Text = " DATA LOADED : " + res.FullPath;
                                  }
                                  else
                                  {
-                                     DownloadListLabel.TextColor = Color.Red;
-                                     DownloadListLabel.Text = "No data files found";
-                                     await Task.Delay(2000);
-                                     DownloadListLabel.TextColor = Color.White;
-                                     DownloadListLabel.Text = "CLICK TO LOAD DATA";
+                                    // DownloadListLabel.TextColor = Color.Red;
+                                    // DownloadListLabel.Text = "No data files found";
+                                     //await Task.Delay(2000);
+                                     //DownloadListLabel.TextColor = Color.White;
+                                     //DownloadListLabel.Text = "IMPORT DATA FROM FILE";
                                  }
                              }
                              catch (Exception e)
@@ -94,7 +138,7 @@ namespace neolink.Pages
                                  DownloadListLabel.Text = "ERROR";
                                  await Task.Delay(2000);
                                  DownloadListLabel.TextColor = Color.White;
-                                 DownloadListLabel.Text = "CLICK TO LOAD DATA";
+                                 DownloadListLabel.Text = "IMPORT DATA FROM FILE";
                              }
 
                             // App.LoadDataStream(LoadedFile);
@@ -109,22 +153,25 @@ namespace neolink.Pages
 
             SelectedFile = new Entry
             {
+
                 BackgroundColor = Color.FromHex("#eeeeee"),
                 TextColor = Color.FromHex("#111111"),
-                FontSize = 16,
+                FontSize = dataInputFontSize,
                 WidthRequest = Units.ScreenWidth,
-                HeightRequest = 40,
+                HorizontalOptions = LayoutOptions.CenterAndExpand,
+                HeightRequest = dataInputHeight,
                 VerticalOptions = LayoutOptions.Center,
                 VerticalTextAlignment = TextAlignment.Center,
                 Placeholder = "Selected data stream",
                 FlowDirection = FlowDirection.LeftToRight,
-                Text = ""
+                Text = "",
+                Margin = new Thickness(Units.ScreenWidth15Percent, 0)
             };
 
             SystemDataFiles = new Label
             {
 
-                FontSize = Units.DynamicFontSizeXXL,
+                FontSize = buttonLabelSize,
                 FontAttributes = FontAttributes.Bold,
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
                 HorizontalTextAlignment = TextAlignment.Center,
@@ -141,7 +188,7 @@ namespace neolink.Pages
             {
                 Label newLabel = new Label
                 {
-                    FontSize = Units.DynamicFontSizeL,
+                    FontSize = dataListFontSize,
                     FontAttributes = FontAttributes.Bold,
                     HorizontalOptions = LayoutOptions.CenterAndExpand,
                     HorizontalTextAlignment = TextAlignment.Center,
@@ -160,6 +207,7 @@ namespace neolink.Pages
                              Device.BeginInvokeOnMainThread(async () =>
                              {
                                  SelectedFile.Text = localFile.Replace("neolink.", "");
+                                 isLocalFile = false;
                              });
 
                          })
@@ -186,15 +234,17 @@ namespace neolink.Pages
 
             UpdateDataStream = new Label
             {
-                FontSize = Units.DynamicFontSizeXXL,
+                BackgroundColor = Color.Cyan,
+                FontSize = buttonLabelSize,
                 FontAttributes = FontAttributes.Bold,
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
                 HorizontalTextAlignment = TextAlignment.Center,
                 VerticalOptions = LayoutOptions.CenterAndExpand,
                 VerticalTextAlignment = TextAlignment.Center,
-                Text = "UPDATE DATA",
-                TextColor = Color.Cyan,
-                WidthRequest = Units.ScreenWidth,
+                Text = "UPDATE NEOLINK DATA",
+                TextColor = Color.Black,
+                WidthRequest = buttonLabelSize * 16,
+                HeightRequest = buttonLabelSize * 4,
                 Margin = new Thickness(8, 16, 0, 0)
             };
 
@@ -209,8 +259,15 @@ namespace neolink.Pages
                              //App.LoadDataStream(DataReader.ReadJsonFile(SelectedFile.Text));
 
 
-                             string tits = DataReader.ReadJsonFile(SelectedFile.Text);
-                             App.LoadDataStream(tits);
+                             string fileContent = DataReader.ReadJsonFile(SelectedFile.Text);
+
+                             if (isLocalFile)
+                             {
+                                 fileContent = FileManager.LoadLocalFile(SelectedFile.Text);
+                             }
+                             
+
+                             App.LoadDataStream(fileContent);
 
                              App.GoToPage(Globals.DATA_INPUT_PAGE);
                          });
@@ -222,7 +279,7 @@ namespace neolink.Pages
 
             StackLayout ContentContainer = new StackLayout
             {
-
+                BackgroundColor = Color.Transparent,
                 Orientation = StackOrientation.Vertical,
 
                 Children =
@@ -233,11 +290,11 @@ namespace neolink.Pages
                    DownloadListLabel,
                    UpdateDataStream
                 },
-                Margin = new Thickness(0, 32, 0, 16)
+                //Margin = new Thickness(0, 32, 0, 16)
 
             };
 
-            Content.Children.Add(ContentContainer, 0, 0);
+            Content.Children.Add(ContentContainer, 0, 1);
 
 
             Grid.SetRowSpan(ContentContainer, 5);

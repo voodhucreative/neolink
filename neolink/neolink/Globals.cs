@@ -22,7 +22,27 @@ namespace neolink
         public static bool VibrateOn;
         public static bool SoundOn;
 
+        public static bool UseSingleWords;
+        public static bool UsePhrases;
+        public static bool UseSentences;
+
         public static List<string> FoundPhrases = new List<string>();
+
+        public static void SetDeaults()
+        {
+            FoundPhrases = new List<string>();
+
+            Initialised = false;
+            NeolinkOn = false;
+            IsPaused = false;
+            ShowDataInput = false;
+            SpeechOn = true;
+            VibrateOn = true;
+            SoundOn = false;
+            UseSingleWords = true;
+            UsePhrases = false;
+            UseSentences = false;
+        }
     }
 }
 

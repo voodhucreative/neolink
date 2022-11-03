@@ -27,7 +27,7 @@
     <MtouchArch>x86_64</MtouchArch>
     <MtouchLink>SdkOnly</MtouchLink>
     <MtouchDebug>true</MtouchDebug>
-    <MtouchSdkVersion>15.5</MtouchSdkVersion>
+    <MtouchSdkVersion>16.0</MtouchSdkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>none</DebugType>
@@ -138,5 +138,6 @@
     <BundleResource Include="Resources\words.png" />
     <BundleResource Include="Resources\Technology-Bold.ttf" />
     <BundleResource Include="Resources\Technology.ttf" />
+    <BundleResource Include="Resources\neolinkwide.png" />
   </ItemGroup>
 </Project>

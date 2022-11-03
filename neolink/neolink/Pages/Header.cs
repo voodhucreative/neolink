@@ -14,6 +14,12 @@ namespace neolink.Layouts
 
         public Header(string title)
         {
+            int headerFontSize = Units.DynamicFontSizeXXL;
+            if (headerFontSize > 32) { headerFontSize = 32; }
+
+            //int topLogoSize = (int)(Units.ScreenWidth * 0.65);
+            //if (topLogoSize > 32) { topLogoSize = 32; }
+
             Content = new StackLayout
             {
                 Orientation = StackOrientation.Vertical,
@@ -23,12 +29,12 @@ namespace neolink.Layouts
             TopLogo = new Image
             {
                 Source = "neolink.png",
-                WidthRequest = Units.ScreenWidth * 0.65,
-
+                //WidthRequest = topLogoSize,
+                
                 Aspect = Aspect.AspectFit,
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
                 VerticalOptions = LayoutOptions.CenterAndExpand,
-                Margin = 8
+                Margin = new Thickness((Units.ScreenUnitL * 2), 0, (Units.ScreenUnitL * 2), Units.ScreenUnitS)
             };
 
             TitleLabel = new Label
@@ -37,7 +43,8 @@ namespace neolink.Layouts
                 Text = title,
                 TextColor = Color.Yellow,
                 FontAttributes = FontAttributes.Bold,
-                FontSize = Units.DynamicFontSizeXXL,
+                FontSize = headerFontSize,
+
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
                 HorizontalTextAlignment = TextAlignment.Center
             };

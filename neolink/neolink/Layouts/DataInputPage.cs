@@ -9,8 +9,6 @@ namespace neolink.Pages
 {
     public class DataInputPage
     {
-        Image TopLogo;
-
         Image RandomiseData;
         Image ClearData;
 
@@ -24,8 +22,35 @@ namespace neolink.Pages
 
         public Grid Content;
 
+
+        int smallIconSize;
+
+        int dataInputFontSize;
+
+        int dataInputHeight;
+
+        int labelFontSize;
+
         public DataInputPage(string dataStream)
         {
+
+            smallIconSize = Units.ScreenWidth10Percent;
+            if (smallIconSize > 48) { smallIconSize = 48; };
+
+            dataInputFontSize = Units.DynamicFontSizeXL;
+            if (dataInputFontSize > 16) { dataInputFontSize = 16; }
+
+            labelFontSize = Units.DynamicFontSizeXL;
+            if (labelFontSize > 16) { labelFontSize = 16; }
+
+            dataInputHeight = dataInputFontSize * 2;
+
+            if (DeviceInfo.Platform == DevicePlatform.Android)
+            {
+                dataInputHeight = dataInputFontSize * 3;
+            }
+
+
             Content = new Grid
             {
                 BackgroundColor = Color.FromHex("#000000"),
@@ -36,22 +61,11 @@ namespace neolink.Pages
                 //Padding = new Thickness(Units.ScreenUnitL, 64),
             };
 
-            TopLogo = new Image
-            {
-                Source = "neolink.png",
-                WidthRequest = Units.ScreenWidth * 0.65,
-
-                Aspect = Aspect.AspectFit,
-                HorizontalOptions = LayoutOptions.CenterAndExpand,
-                VerticalOptions = LayoutOptions.CenterAndExpand,
-                Margin = 8
-            };
-
             RandomiseData = new Image
             {
                 Source = "random.png",
-                WidthRequest = Units.ScreenUnitM  * 2,
-                HeightRequest = Units.ScreenUnitM * 2,
+                WidthRequest = smallIconSize,
+                HeightRequest = smallIconSize,
                 Aspect = Aspect.AspectFit,
                 HorizontalOptions = LayoutOptions.EndAndExpand,
                 VerticalOptions = LayoutOptions.EndAndExpand,
@@ -61,8 +75,8 @@ namespace neolink.Pages
             ClearData = new Image
             {
                 Source = "edit.png",
-                WidthRequest = Units.ScreenUnitM * 2,
-                HeightRequest = Units.ScreenUnitM * 2,
+                WidthRequest = smallIconSize,
+                HeightRequest = smallIconSize,
                 Aspect = Aspect.AspectFit,
                 HorizontalOptions = LayoutOptions.StartAndExpand,
                 VerticalOptions = LayoutOptions.EndAndExpand,
@@ -71,7 +85,7 @@ namespace neolink.Pages
 
             DataInputLabel = new Label
             {
-                FontSize = 12,
+                FontSize = labelFontSize,
                 FontAttributes = FontAttributes.Bold,
                 Text = "Editable Input Stream",
                 TextColor = Color.Cyan,
@@ -82,9 +96,9 @@ namespace neolink.Pages
             {
                 BackgroundColor = Color.FromHex("#eeeeee"),
                 TextColor = Color.FromHex("#111111"),
-                FontSize = 16,
+                FontSize = dataInputFontSize,
                 WidthRequest = Units.ScreenWidth,
-                HeightRequest = 40,
+                HeightRequest = dataInputHeight,
                 VerticalOptions = LayoutOptions.Center,
                 VerticalTextAlignment = TextAlignment.Center,
                 Placeholder = "Paste or type your data here",
@@ -96,7 +110,7 @@ namespace neolink.Pages
 
             DataStreamLabel = new Label
             {
-                FontSize = 12,
+                FontSize = labelFontSize,
                 Text = "Data Input Stream",
                 FontAttributes = FontAttributes.Bold,
                 TextColor = Color.Cyan,
@@ -106,7 +120,7 @@ namespace neolink.Pages
 
             DataStream = new Label
             {
-                FontSize = 12,
+                FontSize = labelFontSize,
                 Text = dataStream,
                 TextColor = Color.White
             };
@@ -175,6 +189,8 @@ namespace neolink.Pages
                 RandomInput += Numbers.GetNextRandom(0, 1024) + ", ";
                 
             }
+            Console.WriteLine(RandomInput);
+
             RandomInput = RandomInput.Substring(0, RandomInput.Length - 2);
             DataInput.Text = RandomInput;
             DataStream.Text = RandomInput;
@@ -197,14 +213,10 @@ namespace neolink.Pages
         {
             Globals.FoundPhrases.Clear();
 
-
             string cleanedInput = DataReader.SanitizeToString(dataStream, 4);
 
             DataInput.Text = cleanedInput;
             DataStream.Text = cleanedInput;
-
-            //App.LoadDataStream(cleanedInput);
-
         }
 
         public void UpdateStreamData()
@@ -217,18 +229,13 @@ namespace neolink.Pages
 
             DataInput.Text = cleanedInput;
             DataStream.Text = DataReader.SanitizeToString(cleanedInput, 4);
-
-
-
         }
 
 
         public string GetInput()
         {
             return DataStream.Text;
-        }
-
-        
+        }  
     }
 }
 

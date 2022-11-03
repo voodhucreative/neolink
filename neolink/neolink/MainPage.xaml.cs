@@ -149,16 +149,20 @@ namespace neolink
 
             CurrentEvent = (int)neolinkEvents.neolinkLoad;
 
+            Globals.SetDeaults();
+
             PhraseManager = new NeoPhraseManager();
             PhraseManager.PopulateDictionary();
 
-            Globals.FoundPhrases = new List<string>();
+            //Globals.FoundPhrases = new List<string>();
 
             // build pages
             DataInputPage = new DataInputPage(NeoPhraseManager.GetTriggeredIndexStream());
             DictionaryPage = new DictionaryPage(NeoPhraseManager.GetAvailablePhrases());
             DownloadsPage = new DownloadsPage();
             DevicesPage = new DevicesPage();
+
+
 
             //DataInputPage.Footer = Footer;
             //DictionaryPage.Footer = Footer;
@@ -174,19 +178,32 @@ namespace neolink
 
             startDelay = 100;
 
-            Globals.Initialised = false;
-            Globals.NeolinkOn = false;
-            Globals.IsPaused = false;
-            Globals.ShowDataInput = false;
-            Globals.SpeechOn = true;
-            Globals.VibrateOn = true;
-            Globals.SoundOn = false;
+            //Globals.Initialised = false;
+            //Globals.NeolinkOn = false;
+            //Globals.IsPaused = false;
+            //Globals.ShowDataInput = false;
+            //Globals.SpeechOn = true;
+            //Globals.VibrateOn = true;
+            //Globals.SoundOn = false;
+
+            int activityFontSize = Units.DynamicFontSizeXXL;
+            if (activityFontSize > 32) { activityFontSize = 32; }
+
+            int sequenceFontSize = Units.DynamicFontSizeXXXL;
+            if (sequenceFontSize > 40) { sequenceFontSize = 40; }
+
+            int foundFontSize = Units.DynamicFontSizeXXXXL;
+            if (foundFontSize > 64) { foundFontSize = 64; }
+
+
+            int indexFontSize = sequenceFontSize;
+
 
             NeoActivityStatus = new Label
             {
                 TextColor = Color.Cyan,
                 FontFamily = Fonts.GetRegularAppFont(),
-                FontSize = Units.DynamicFontSizeXXL,
+                FontSize = activityFontSize,
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
                 VerticalOptions = LayoutOptions.EndAndExpand,
                 HorizontalTextAlignment = TextAlignment.Center,
@@ -230,7 +247,7 @@ namespace neolink
             {
                 TextColor = Color.White,
                 FontFamily = Fonts.GetRegularAppFont(),
-                FontSize = Units.DynamicFontSizeXXXXL,
+                FontSize = sequenceFontSize,
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
                 VerticalOptions = LayoutOptions.CenterAndExpand,
                 HorizontalTextAlignment = TextAlignment.Center,
@@ -241,7 +258,7 @@ namespace neolink
             {
                 TextColor = Color.Red,
                 FontFamily = Fonts.GetRegularAppFont(),
-                FontSize = Units.DynamicFontSizeXXXXL,
+                FontSize = indexFontSize,
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
                 VerticalOptions = LayoutOptions.CenterAndExpand,
                 HorizontalTextAlignment = TextAlignment.Center,
@@ -253,7 +270,7 @@ namespace neolink
             {
                 TextColor = Color.Yellow,
                 FontFamily = Fonts.GetRegularAppFont(),
-                FontSize = Units.DynamicFontSizeXXXXL,
+                FontSize = foundFontSize,
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
                 VerticalOptions = LayoutOptions.CenterAndExpand,
                 HorizontalTextAlignment = TextAlignment.Center,
@@ -382,7 +399,7 @@ namespace neolink
         public void SwitchOff()
         {
             Reset();
-            Speak("Off", false);
+            //Speak("Off", false);
 
             VisibleSequenceHolder.Children.Clear();
 
@@ -570,13 +587,13 @@ namespace neolink
                 }
 
                 Color textColor = Color.White;
-                int fontSize = Units.DynamicFontSizeXXXXL;
+                int fontSize = Units.DynamicFontSizeXXXL;
                 string font = Fonts.GetRegularAppFont();
 
                 if (PhraseManager.IsTriggerIndex(number))
                 {
                     textColor = Color.Red;
-                    fontSize = (int)(Units.DynamicFontSizeXXXXL * 1.5);
+                    fontSize = (int)(Units.DynamicFontSizeXXXL * 1.3);
                     font = Fonts.GetBoldAppFont();
                 }
 
@@ -651,7 +668,7 @@ namespace neolink
 
                     MatchedPhrase.Text = triggeredPhrase;
 
-                //SpeechOn = false;
+                    //SpeechOn = false;
 
                     Globals.FoundPhrases.Add(triggeredPhrase);
                     DictionaryPage.HighlightFoundPhrases();
@@ -989,7 +1006,6 @@ namespace neolink
             ContentContainer.HeightRequest = Units.ScreenHeight;
             ContentContainer.VerticalOptions = LayoutOptions.StartAndExpand;
             ContentContainer.HorizontalOptions = LayoutOptions.CenterAndExpand;
-
 
             PageContent.Children.Clear();
             

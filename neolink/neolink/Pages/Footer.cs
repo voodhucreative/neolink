@@ -18,6 +18,13 @@ namespace neolink.Layouts
 
         public Footer()
         {
+            int smallIconSize = Units.ScreenWidth10Percent;
+            if (smallIconSize > 48) { smallIconSize = 48; };
+
+            int largeIconSize = Units.ScreenWidth20Percent;
+            if (largeIconSize > 64) { largeIconSize = 64; };
+
+
             Content = new StackLayout
             {
 
@@ -26,8 +33,8 @@ namespace neolink.Layouts
             StartStopImage = new Image
             {
                 Source = "start.png",
-                WidthRequest = Units.ScreenUnitM * 3,
-                HeightRequest = Units.ScreenUnitM * 3,
+                WidthRequest = largeIconSize,
+                HeightRequest = largeIconSize,
                 Aspect = Aspect.AspectFit,
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
                 VerticalOptions = LayoutOptions.EndAndExpand,
@@ -72,8 +79,8 @@ namespace neolink.Layouts
             WordsImage = new Image
             {
                 Source = "words.png",
-                WidthRequest = Units.ScreenUnitM * 2,
-                HeightRequest = Units.ScreenUnitM * 2,
+                WidthRequest = smallIconSize,
+                HeightRequest = smallIconSize,
                 Aspect = Aspect.AspectFit,
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
                 VerticalOptions = LayoutOptions.EndAndExpand,
@@ -95,8 +102,8 @@ namespace neolink.Layouts
             NumbersImage = new Image
             {
                 Source = "numbers.png",
-                WidthRequest = Units.ScreenUnitM * 2,
-                HeightRequest = Units.ScreenUnitM * 2,
+                WidthRequest = smallIconSize,
+                HeightRequest = smallIconSize,
                 Aspect = Aspect.AspectFit,
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
                 VerticalOptions = LayoutOptions.EndAndExpand,
@@ -118,8 +125,8 @@ namespace neolink.Layouts
             ConnectImage = new Image
             {
                 Source = "connect.png",
-                WidthRequest = Units.ScreenUnitM * 2,
-                HeightRequest = Units.ScreenUnitM * 2,
+                WidthRequest = smallIconSize,
+                HeightRequest = smallIconSize,
                 Aspect = Aspect.AspectFit,
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
                 VerticalOptions = LayoutOptions.EndAndExpand,
@@ -142,8 +149,8 @@ namespace neolink.Layouts
             DownloadImage = new Image
             {
                 Source = "download.png",
-                WidthRequest = Units.ScreenUnitM * 2,
-                HeightRequest = Units.ScreenUnitM * 2,
+                WidthRequest = smallIconSize,
+                HeightRequest = smallIconSize,
                 Aspect = Aspect.AspectFit,
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
                 VerticalOptions = LayoutOptions.EndAndExpand,
